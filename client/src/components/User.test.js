@@ -9,18 +9,7 @@ describe('NewUser component', () => {
     it('renders a new user', () => {
         render(<User/>)
     })
-    // it('should call the handleclick function passed as prop', () => {
-    //     const button = jest.fn();
     
-    //     // we pass the mock as a prop
-    //     const { getByText } = render( <NewUser button={button} />);
-    
-    //     // fire the event
-    //     fireEvent.click(getByText(/tried it/i));
-    
-    //     // we can now assert that the function was called
-    //     expect(button).toHaveBeenCalled();
-    //   });
 
     it('update the message when speak button is clicked', () => {
         const { getByTestId, queryByText } = render(<User />);
