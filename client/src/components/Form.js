@@ -11,8 +11,8 @@ const Forms = ({touched, errors}) => {
         <Form>
             <h2>Registration Form</h2>
 
-            <Field type="text" name="Username" placeholder='Username'/>
-            {touched.Username && errors.Username && <p>{errors.Username}</p>}
+            <Field type="text" name="username" placeholder='Username'/>
+            {touched.username && errors.username && <p>{errors.username}</p>}
             <Field type='password' name ='password' placeholder='Password'/>
             {touched.password && errors.password && <p>{errors.password}</p>}
 
@@ -23,9 +23,9 @@ const Forms = ({touched, errors}) => {
 
 const FormikForm = withFormik({
 
-    mapPropsToValues({Username, password}){
+    mapPropsToValues({username, password}){
         return{
-            Username: Username || '',
+            username: username || '',
             password: password || ''
         }
         },
