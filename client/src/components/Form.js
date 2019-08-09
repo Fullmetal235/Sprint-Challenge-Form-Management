@@ -1,79 +1,49 @@
-const Forms = ({ errors, touched, values, handleSubmit, status }) => {
-  const [person, setperson] = useState([]);
-  console.log(person);
+import React from 'react'
+import { withFormik, Form, Field } from "formik";
+import * as Yup from 'yup'
+import axios from 'axios'
 
-  useEffect(() => {
-    if (status) {
-      setperson([...person, status]);
-    }
-  }, [status]);
 
-  return (
-    <div className="item-form">
-      <h1>Sign In</h1>
-      <Form>
-      <Field type="text" name="Name" placeholder="Name" />
-        {touched.Name && errors.Name && (
-          <p className="error">{errors.Name}</p>
-        )}
 
-        <Field type="text" name="Email" placeholder="Email" />
-        {touched.Email && errors.Email && (
-          <p className="error">{errors.Email}</p>
-        )}
+const Forms = ({touched, errors}) => {
 
-        <Field type="text" name="Password" placeholder="Password" />
-        {touched.Password && errors.Password && (
-          <p className="error">{errors.Password}</p>
-        )}
+    return(
+        <Form>
+            <h2>Registration Form</h2>
 
-        
+            <Field type="text" name="Username" placeholder='Username'/>
+            {touched.Username && errors.Username && <p>{errors.Username}</p>}
+            <Field type='password' name ='password' placeholder='Password'/>
+            {touched.password && errors.password && <p>{errors.password}</p>}
 
-        <label className="checkbox-container">
-          I agree to terms and service
-          <Field
-            type="checkbox"
-            name="check"
-            checked={values.Name}
-          />
-          <span className="checkmark" />
-        </label>
+            <button type='submit'>Submit</button>
+        </Form>
+    ) 
+}
 
-        <Field
-          component="textarea"
-          type="text"
-          name="notes"
-          placeholder="Notes"
-        />
-        {touched.notes && errors.notes && (
-          <p className="error">{errors.notes}</p>
-        )}
-
-        <button type="submit">Submit!</button>
-      </Form>
-
-      {person.map(item => (
-        <p key={item.id}>{item.Password}</p>
-      ))}
-    </div>
-  );
-};
-
-// Higher Order Component - HOC
-// Hard to share component / stateful logic (custom hooks)
-// Function that takes in a component, extends some logic onto that component,
-// returns a _new_ component (copy of the passed in component with the extended logic)
 const FormikForm = withFormik({
-  mapPropsToValues({ Password, Email, Name }) {
-    return {
-      Name: Name || '',
-      Email: Email || '',
-      Password: Password || '',
-     
-    };
-  },
 
-  validationSchema: Yup.object().shape({
-    Password: Yup.string().required('You silly!!!'),
-    Email: Yup.string().required(),
-  }),
+    mapPropsToValues({Username, password}){
+        return{
+            Username: Username || '',
+            password: password || ''
+        }
+        },
+        validationSchema: Yup.object().shape({
+            Username: Yup.string().required(),
+            password: Yup.string().min(6).required()
+        }),
+        handleSubmit(values){
+            axios.post('http://localhost:5000/api/register', values)
+            .then(response => {
+                console.log(response)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+            
+        }
+    
+})(Forms)
+
+export default FormikForm
